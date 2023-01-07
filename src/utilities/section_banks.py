@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List
+from typing import Dict, List
 
 import pandas as pd
 
 from .configurations import load_config
+from .question_generator import RandomQuestionsGenerator
 from .quiz_seasons import QuizSeason
 from .subjects import Subjects
 
@@ -31,14 +32,15 @@ class SectionBanks:
 
 
 class SectionFilter:
-    def __init__(self, questions: pd.DataFrame):
-        self.questions = questions.copy()
-        self.grouped_subjects = self.questions.groupby("Area")
+    def __init__(self, section_questions: pd.DataFrame):
+        self.section_questions = section_questions
+        self.grouped_subjects = self.section_questions.groupby("Area")
         self.subjects = self.grouped_subjects.groups.keys()
         self.mean_freq_quotient = load_config().settings.mean_frequency_quotient
+        self.questions_frequent_areas = self.__get_questions_frequent_areas()
 
-    def filter_infrequent_subjects(self) -> pd.DataFrame:
-        self.questions = pd.concat(
+    def __get_questions_frequent_areas(self) -> pd.DataFrame:
+        return pd.concat(
             [
                 self.grouped_subjects.get_group(subject)
                 for subject in self.subjects
@@ -48,11 +50,34 @@ class SectionFilter:
             axis=0,
         )
 
-    def filter_subject(self, subject: Subjects) -> pd.DataFrame:
-        self.questions = self.questions[self.questions["Area"] == subject.value]
-
-    def __get_mean_subject_freq(self):
-        return self.questions["Area"].value_counts().mean()
-
     def get_min_allowed_subject_freq(self):
         return self.__get_mean_subject_freq() / self.mean_freq_quotient
+
+    def __get_mean_subject_freq(self):
+        return self.section_questions["Area"].value_counts().mean()
+
+    def get_subject_frequent_only(self, subject: Subjects) -> pd.DataFrame:
+        return self.questions_frequent_areas[
+            self.questions_frequent_areas["Area"] == subject.value
+        ]
+
+    def get_section_questions(
+        self, num_questions_per_area: int
+    ) -> Dict[str, List[str]]:
+        """
+        Returns a dictionary of the form {"BK": [ques 1, ques 1], "Bio": [ques1 , ques 2]}
+        """
+        section_questions: Dict[str, List[str]] = {}
+        for subject in self.get_frequent_subjects():
+            subject_bank = self.get_subject_frequent_only(subject)
+            question_generator = RandomQuestionsGenerator(
+                subject_bank, num_questions_per_area
+            )
+            section_questions[subject.value] = question_generator.generate_questions()
+        return section_questions
+
+    def get_frequent_subjects(self) -> List[Subjects]:
+        return [
+            Subjects(subject)
+            for subject in self.questions_frequent_areas["Area"].unique()
+        ]
