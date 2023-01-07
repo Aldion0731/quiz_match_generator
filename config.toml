@@ -1,0 +1,5 @@
+[filepaths]
+data_dir = "data"
+
+[settings]
+mean_frequency_quotient = 5
