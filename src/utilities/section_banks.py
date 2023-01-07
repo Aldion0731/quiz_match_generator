@@ -3,10 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List
 
-import numpy as np
 import pandas as pd
-from pandas.core.groupby.generic import DataFrameGroupBy
 
+from .configurations import load_config
 from .quiz_seasons import QuizSeason
 from .subjects import Subjects
 
@@ -30,66 +29,30 @@ class SectionBanks:
             buzzer=self.buzzer[self.buzzer["Round"] == round],
         )
 
-    # def group_alternate(self) -> pd.DataFrame:
-    #     return self.alternate.
 
-    # def filter_minutes(self, subjects: Subjects) -> pd.DataFrame:
-    #     return filter_by_area_col(self.minutes, subjects)
+class SectionFilter:
+    def __init__(self, questions: pd.DataFrame):
+        self.questions = questions.copy()
+        self.grouped_subjects = self.questions.groupby("Area")
+        self.subjects = self.grouped_subjects.groups.keys()
+        self.mean_freq_quotient = load_config().settings.mean_frequency_quotient
 
-    # def filter_buzzer(self, subjects: Subjects) -> pd.DataFrame:
-    #     return filter_by_area_col(self.buzzer, subjects)
+    def filter_infrequent_subjects(self) -> pd.DataFrame:
+        self.questions = pd.concat(
+            [
+                self.grouped_subjects.get_group(subject)
+                for subject in self.subjects
+                if len(self.grouped_subjects.get_group(subject))
+                > self.get_min_allowed_subject_freq()
+            ],
+            axis=0,
+        )
 
-    # def without_infrequent_areas(self, freq_checker: FrequencyChecker):
-    #     return SectionBanks(
-    #         alternate=drop_infrequent_values(self.alternate, "Area", freq_checker),
-    #         minutes=drop_infrequent_values(self.minutes, "Area", freq_checker),
-    #         buzzer=drop_infrequent_values(self.buzzer, "Area", freq_checker),
-    #     )
+    def filter_subject(self, subject: Subjects) -> pd.DataFrame:
+        self.questions = self.questions[self.questions["Area"] == subject.value]
 
+    def __get_mean_subject_freq(self):
+        return self.questions["Area"].value_counts().mean()
 
-def filter_by_area_col(df: pd.DataFrame, subjects: Subjects) -> pd.DataFrame:
-    return df[df["Area"] == subjects.value]
-
-
-def filter_section(section: pd.DataFrame, subjects: Subjects) -> pd.DataFrame:
-    return section[section["Area"] == subjects.value]
-
-
-# class FrequencyChecker:
-#     def __init__(self, ser: pd.Series, drop_ratio: float = 0.1):
-#         self.ser = ser
-#         self.cutoff_freq = self.get_expected_ser_freq()
-#         self.drop_ratio = drop_ratio
-
-#     def get_expected_ser_freq(self) -> float:
-#         return 1 / len(np.unique(self.ser))
-
-#     def get_infrequent_series_values(self) -> List[str]:
-#         frequenies = self.ser.value_counts(normalize=True)
-#         allowed_frequenies = frequenies[frequenies > self.cutoff_freq * self.drop_ratio]
-#         return [area for area in allowed_frequenies.index]
-
-
-# def drop_infrequent_values(
-#     df: pd.DataFrame, col: str, freq_checker: FrequencyChecker
-# ) -> pd.DataFrame:
-#     infrequent_cols = freq_checker.get_infrequent_series_values(df[col])
-#     return df.drop(infrequent_cols)
-
-
-# @dataclass
-# class GroupedSectionBanks:
-#     alternate: DataFrameGroupBy = DataFrameGroupBy(pd.DataFrame([]))
-#     minutes: DataFrameGroupBy = DataFrameGroupBy(pd.DataFrame([]))
-#     buzzer: DataFrameGroupBy = DataFrameGroupBy(pd.DataFrame([]))
-
-#     def from_section_bank(self, bank: SectionBanks) -> GroupedSectionBanks:
-#         return GroupedSectionBanks(
-#             alternate=bank.alternate.groupby("Area"),
-#             minutes=bank.minutes.groupby("Area"),
-#             buzzer=bank.buzzer.groupby("Area"),
-#         )
-
-
-# def get_subject_questions(subject: Subjects, section: DataFrameGroupBy) -> pd.DataFrame:
-#     return section.get_group(subject.value)
+    def get_min_allowed_subject_freq(self):
+        return self.__get_mean_subject_freq() / self.mean_freq_quotient
