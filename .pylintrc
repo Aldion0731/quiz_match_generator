@@ -1,0 +1,26 @@
+[MAIN]
+
+
+[BASIC]
+
+good-names=i,
+          j,
+          df
+
+[MESSAGES CONTROL]
+
+disable=raw-checker-failed,
+        broad-except,
+        bad-inline-option,
+        locally-disabled,
+        file-ignored,
+        suppressed-message,
+        useless-suppression,
+        deprecated-pragma,
+        use-symbolic-message-instead,
+        missing-function-docstring,
+        missing-module-docstring,
+        missing-class-docstring,
+        too-few-public-methods,
+        unspecified-encoding
+

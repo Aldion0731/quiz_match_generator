@@ -5,10 +5,16 @@ name = "pypi"
 
 [packages]
 pandas = "~=1.5"
+openpyxl = "~=3.0"
+pyserde = "~=0.9"
+tomli-w = "*"
+xlsxwriter = "~=3.0"
 
 [dev-packages]
 pylint = "~=2.15"
 mypy = "~=0.991"
+black = "~=22.12"
+pytest = "*"
 
 [requires]
 python_version = "3.10"
