@@ -1,4 +1,3 @@
-import traceback
 from typing import List
 
 import numpy as np
@@ -18,7 +17,7 @@ class RandomQuestionsGenerator:
         questions = self.subject_questions["Questions"].iloc[
             self.get_question_indices()
         ]
-        return [question for question in questions.values]
+        return list(questions.values)
 
     def validate_num_questions(self) -> bool:
         return len(self.subject_questions) >= self.num_questions_per_area

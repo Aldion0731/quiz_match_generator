@@ -22,9 +22,7 @@ class SectionBuilder:
         self.num_questions_per_area = self.get_num_questions_per_area()
 
     def get_num_questions_per_area(self) -> int:
-        return min(
-            [len(self.section_questions[area]) for area in self.section_questions]
-        )
+        return min(len(self.section_questions[area]) for area in self.section_questions)
 
     def get_paired_questions(self) -> PairedQuestions:
         ordered_questions = PairedQuestions(area=[], team_a=[], team_b=[])

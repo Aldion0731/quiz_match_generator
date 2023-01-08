@@ -1,15 +1,17 @@
 import re
-from typing import List
+from typing import List, Tuple
 
 import pandas as pd
 
 
 class Cleaner:
-    def clean(self, text: str, remove_chars: List[str]) -> str:
+    def clean(self, text: str, remove_chars: Tuple[str]) -> str:
         text = self.remove_unwanted_terminal_chars(text, remove_chars)
         return self.rename_areas(text)
 
-    def remove_unwanted_terminal_chars(self, text: str, chars: List[str] = [""]) -> str:
+    def remove_unwanted_terminal_chars(
+        self, text: str, chars: Tuple[str] = ("",)
+    ) -> str:
         text = text.rstrip(" ")
         for char in chars:
             text = text.rstrip(char)
@@ -50,4 +52,4 @@ class DfCleaner(Cleaner):
         return [self.remove_unwanted_terminal_chars(col) for col in df.columns]
 
     def get_clean_area_col(self, df: pd.DataFrame) -> pd.Series:
-        return df["Area"].apply(lambda x: self.clean(x, remove_chars=["."]))
+        return df["Area"].apply(lambda x: self.clean(x, remove_chars=(".",)))

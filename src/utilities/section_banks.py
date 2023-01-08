@@ -23,11 +23,11 @@ class SectionBanks:
         buzzer_bank = pd.concat([season.buzzer for season in seasons])
         return SectionBanks(alternates_bank, minutes_bank, buzzer_bank)
 
-    def from_round(self, round: int) -> SectionBanks:
+    def from_round(self, match_round: int) -> SectionBanks:
         return SectionBanks(
-            alternate=self.alternate[self.alternate["Round"] == round],
-            minutes=self.minutes[self.minutes["Round"] == round],
-            buzzer=self.buzzer[self.buzzer["Round"] == round],
+            alternate=self.alternate[self.alternate["Round"] == match_round],
+            minutes=self.minutes[self.minutes["Round"] == match_round],
+            buzzer=self.buzzer[self.buzzer["Round"] == match_round],
         )
 
 
