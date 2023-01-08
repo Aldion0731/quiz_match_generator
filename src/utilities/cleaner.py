@@ -15,7 +15,7 @@ class Cleaner:
             text = text.rstrip(char)
         return text
 
-    def rename_areas(self, text: str):
+    def rename_areas(self, text: str) -> str:
         text = self.rename_bio(text)
         text = self.rename_mus(text)
         text = self.rename_phy(text)

@@ -50,10 +50,10 @@ class SectionFilter:
             axis=0,
         )
 
-    def get_min_allowed_subject_freq(self):
+    def get_min_allowed_subject_freq(self) -> float:
         return self.__get_mean_subject_freq() / self.mean_freq_quotient
 
-    def __get_mean_subject_freq(self):
+    def __get_mean_subject_freq(self) -> float:
         return self.section_questions["Area"].value_counts().mean()
 
     def get_subject_frequent_only(self, subject: Subjects) -> pd.DataFrame:

@@ -10,7 +10,7 @@ from ..utilities.section_banks import SectionBanks, SectionFilter
 from ..utilities.sections_builder import SectionBuilder
 
 
-def run(config: Config, match_round: int):
+def run(config: Config, match_round: int) -> None:
     excel_seasons = ExcelSeasons().load_from_files(config.filepaths.data_dir)
     seasons = [QuizSeason().from_read_excel(season) for season in excel_seasons]
 
@@ -35,7 +35,7 @@ def run(config: Config, match_round: int):
 
 def get_section_builder(
     section_df: pd.DataFrame, num_questions_per_area: int, num_teams: int = 2
-):
+) -> SectionBuilder:
     section_filter = SectionFilter(section_df)
     return SectionBuilder(
         section_filter.get_section_questions(num_questions_per_area), num_teams
@@ -44,7 +44,7 @@ def get_section_builder(
 
 def generate_match(
     alternate: pd.DataFrame, minutes: pd.DataFrame, buzzer: pd.DataFrame, round: int
-):
+) -> None:
     date = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     with pd.ExcelWriter(f"round-{round}_{date}.xlsx", engine="xlsxwriter") as writer:
         alternate.to_excel(writer, sheet_name="Alternate")

@@ -20,7 +20,7 @@ class RandomQuestionsGenerator:
         ]
         return [question for question in questions.values]
 
-    def validate_num_questions(self):
+    def validate_num_questions(self) -> bool:
         return len(self.subject_questions) >= self.num_questions_per_area
 
     def get_question_indices(self) -> np.ndarray:
