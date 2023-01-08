@@ -25,7 +25,6 @@ class QuizSeason:
         )
 
     def with_clean_data(self, df_cleaner: DfCleaner) -> QuizSeason:
-        df_cleaner = DfCleaner()
         return QuizSeason(
             alternate=df_cleaner.get_clean_df(self.alternate),
             minutes=df_cleaner.get_clean_df(self.minutes),
