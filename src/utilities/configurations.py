@@ -9,12 +9,22 @@ from serde.toml import from_toml
 @dataclass(frozen=True)
 class Settings:
     mean_frequency_quotient: int
+    default_match_round: int
 
 
 @serde(type_check=Strict)
 @dataclass(frozen=True)
 class Filepaths:
     data_dir: Path
+    generated_matches: Path
+
+
+@serde(type_check=Strict)
+@dataclass(frozen=True)
+class NumRoundQuestions:
+    first: int
+    second: int
+    third: int
 
 
 @serde(type_check=Strict)
@@ -22,6 +32,7 @@ class Filepaths:
 class Config:
     settings: Settings
     filepaths: Filepaths
+    num_round_questions: NumRoundQuestions
 
 
 def load_config(config_file: Path = Path("config.toml")) -> Config:

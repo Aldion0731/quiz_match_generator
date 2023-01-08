@@ -1,5 +1,12 @@
 [filepaths]
 data_dir = "data"
+generated_matches = "generated_matches"
 
 [settings]
 mean_frequency_quotient = 5
+default_match_round = 1
+
+[num_round_questions]
+first = 20
+second = 48
+third = 28

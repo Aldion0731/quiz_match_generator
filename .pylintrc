@@ -1,5 +1,5 @@
 [MAIN]
-
+init-hook="import sys; sys.path.append('./src')"
 
 [BASIC]
 
@@ -21,6 +21,7 @@ disable=raw-checker-failed,
         missing-function-docstring,
         missing-module-docstring,
         missing-class-docstring,
+        relative-beyond-top-level,
         too-few-public-methods,
         unspecified-encoding
 
