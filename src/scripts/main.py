@@ -68,7 +68,7 @@ def generate_match(
         buzzer.to_excel(writer, sheet_name="Buzzer")
 
 
-def get_match_path(dest_dir: Path, match_round) -> Path:
+def get_match_path(dest_dir: Path, match_round: int) -> Path:
     date = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     return dest_dir / f"round-{match_round}_{date}.xlsx"
 

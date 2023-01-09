@@ -2,7 +2,7 @@ from ..utilities.configurations import load_config
 from .main import run
 
 
-def run_exe():
+def run_exe() -> None:
     config = load_config()
     cli_round = input("Enter the match round: ")
     match_round = get_match_round(cli_round)
