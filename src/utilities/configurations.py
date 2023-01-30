@@ -4,6 +4,8 @@ from pathlib import Path
 from serde import Strict, serde
 from serde.toml import from_toml
 
+from .schools import Schools
+
 
 @serde(type_check=Strict)
 @dataclass(frozen=True)
@@ -29,10 +31,19 @@ class NumRoundQuestions:
 
 @serde(type_check=Strict)
 @dataclass(frozen=True)
+class SchoolInfo:
+    name: Schools
+    logo: Path
+    icon: Path
+
+
+@serde(type_check=Strict)
+@dataclass(frozen=True)
 class Config:
     settings: Settings
     filepaths: Filepaths
     num_round_questions: NumRoundQuestions
+    school_info: SchoolInfo
 
 
 def load_config(config_file: Path = Path("config.toml")) -> Config:
