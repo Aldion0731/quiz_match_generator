@@ -7,7 +7,7 @@ from ..gui.gui_utils import create_frames, create_window, generate_match
 from ..utilities.configurations import load_config
 
 
-def run():
+def run() -> None:
     config = load_config()
     window = create_window(config)
     frames = create_frames(window)
