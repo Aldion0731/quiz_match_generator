@@ -10,3 +10,8 @@ default_match_round = 1
 first = 20
 second = 48
 third = 28
+
+[school_info]
+name = "Calabar High"
+logo = "images/Crest_2011_final.png"
+icon = "images/Crest_2011_final.ico"
