@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List
 
 import pandas as pd
 
-from .cleaner import DfCleaner
+from .season_cleaner import SeasonCleaner
 
 
 @dataclass
@@ -15,20 +15,23 @@ class QuizSeason:
     alternate: pd.DataFrame = pd.DataFrame()
     minutes: pd.DataFrame = pd.DataFrame()
     buzzer: pd.DataFrame = pd.DataFrame()
+    section_keys: List[str] = field(default_factory=lambda: [""])
 
     def from_read_excel(self, read_excel: Dict) -> QuizSeason:
-        section_keys: List[str] = list(read_excel.keys())
+        section_keys = list(read_excel.keys())
         return QuizSeason(
             alternate=read_excel[section_keys[0]],
             minutes=read_excel[section_keys[1]],
             buzzer=read_excel[section_keys[2]],
+            section_keys=section_keys,
         )
 
-    def with_clean_data(self, df_cleaner: DfCleaner) -> QuizSeason:
+    def with_clean_data(self, cleaner: SeasonCleaner) -> QuizSeason:
         return QuizSeason(
-            alternate=df_cleaner.get_clean_df(self.alternate),
-            minutes=df_cleaner.get_clean_df(self.minutes),
-            buzzer=df_cleaner.get_clean_df(self.buzzer),
+            alternate=cleaner.get_clean_section(self.alternate),
+            minutes=cleaner.get_clean_section(self.minutes),
+            buzzer=cleaner.get_clean_section(self.buzzer),
+            section_keys=self.section_keys,
         )
 
 
