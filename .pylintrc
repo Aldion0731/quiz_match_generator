@@ -9,20 +9,24 @@ good-names=i,
 
 [MESSAGES CONTROL]
 
-disable=raw-checker-failed,
+disable=bad-inline-option,
         broad-except,
-        bad-inline-option,
+        deprecated-pragma,
+        file-ignored,
+        fixme,
         import-error,
         locally-disabled,
-        file-ignored,
-        suppressed-message,
-        useless-suppression,
-        deprecated-pragma,
-        use-symbolic-message-instead,
+        missing-class-docstring,
         missing-function-docstring,
         missing-module-docstring,
-        missing-class-docstring,
+        raw-checker-failed,
         relative-beyond-top-level,
+        suppressed-message,
         too-few-public-methods,
-        unspecified-encoding
+        unspecified-encoding,
+        useless-suppression,
+        use-symbolic-message-instead
+        
+        
+        
 

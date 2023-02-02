@@ -3,6 +3,7 @@ from typing import List
 
 import pandas as pd
 
+from .data_formatter import DataFormatterThirteen
 from .text_cleaner import TextCleaner
 
 
@@ -12,7 +13,7 @@ class SeasonCleaner(ABC):
         pass
 
 
-class SeasonCleanerDefault(SeasonCleaner):
+class SeasonCleanerDefault(SeasonCleaner):  # TODO: refactor so it uses a formatter
     def __init__(self, cleaner: TextCleaner) -> None:
         self.cleaner = cleaner
 
@@ -28,3 +29,10 @@ class SeasonCleanerDefault(SeasonCleaner):
 
     def get_clean_area_col(self, area_col: pd.Series) -> pd.Series:
         return area_col.apply(self.cleaner.clean)
+
+
+class SeasonCleanerThirteen(SeasonCleanerDefault):
+    def get_clean_section(self, season_section: pd.DataFrame) -> pd.DataFrame:
+        formatter = DataFormatterThirteen(season_section)
+        formatted_data = formatter.format_data()
+        return super().get_clean_section(formatted_data)

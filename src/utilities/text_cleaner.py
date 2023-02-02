@@ -1,6 +1,8 @@
 import re
 from abc import ABC, abstractmethod
 
+from .subjects import THIRTEEN_MAP, Subjects
+
 
 class TextCleaner(ABC):
     @abstractmethod
@@ -14,7 +16,9 @@ class TextCleanerDefault(TextCleaner):
         text = text.rstrip(".")
         return self.rename_areas(text)
 
-    def rename_areas(self, text: str) -> str:
+    def rename_areas(
+        self, text: str
+    ) -> str:  # TODO: refactor to use a single Enum instead of multiple function calls
         text = self.rename_bio(text)
         text = self.rename_mus(text)
         text = self.rename_phy(text)
@@ -39,3 +43,8 @@ class TextCleanerDefault(TextCleaner):
     def rename_spo(text: str) -> str:
         pattern = re.compile(r"(Spo\b)|(Sport\b)")
         return pattern.sub("Sports", text)
+
+
+class TextCleanerThirteen(TextCleanerDefault):
+    def rename_areas(self, text: str) -> str:
+        return Subjects.from_df_val(text, THIRTEEN_MAP).value

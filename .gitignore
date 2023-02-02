@@ -1,11 +1,11 @@
 .venv
 .vscode
 __pycache__
-Notes*.md
-round*
-eda.ipynb
-generated_matches
 cli_exe.py
-output
-exe_app.py
+generated_matches
 images
+notebooks
+Notes*.md
+output
+quiz_match_generator.py
+

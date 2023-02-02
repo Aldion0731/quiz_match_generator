@@ -1,10 +1,18 @@
 from typing import List
 
-from .season_cleaner import SeasonCleaner, SeasonCleanerDefault
-from .text_cleaner import TextCleaner, TextCleanerDefault
+from .season_cleaner import SeasonCleaner, SeasonCleanerDefault, SeasonCleanerThirteen
+from .text_cleaner import TextCleaner, TextCleanerDefault, TextCleanerThirteen
 
-TEXT_CLEANER_FACTORIES = {"2014": TextCleanerDefault(), "2016": TextCleanerDefault()}
-SEASON_CLEANER_FACTORIES = {"2014": SeasonCleanerDefault, "2016": SeasonCleanerDefault}
+TEXT_CLEANER_FACTORIES = {
+    "2013": TextCleanerThirteen(),
+    "2014": TextCleanerDefault(),
+    "2016": TextCleanerDefault(),
+}
+SEASON_CLEANER_FACTORIES = {
+    "2013": SeasonCleanerThirteen,
+    "2014": SeasonCleanerDefault,
+    "2016": SeasonCleanerDefault,
+}
 
 
 class TextCleanerFactory:
