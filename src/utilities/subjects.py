@@ -9,6 +9,7 @@ from typing import Dict
 class MapNames(Enum):
     DEFAULT = "DEFAULT_MAP"
     THIRTEEN = "THIRTEEN_MAP"
+    TWENTY = "TWENTY_MAP"
 
 
 class Subjects(Enum):

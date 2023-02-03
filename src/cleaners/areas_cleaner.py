@@ -25,3 +25,11 @@ class AreasCleanerThirteen(AreasCleanerDefault):
             return super().rename_area(text)
         except Exception:
             return Subjects.from_df_val(text, MapNames.THIRTEEN).value
+
+
+class AreasCleanerTwenty(AreasCleanerDefault):
+    def rename_area(self, text: str) -> str:
+        try:
+            return super().rename_area(text)
+        except Exception:
+            return Subjects.from_df_val(text, MapNames.TWENTY).value

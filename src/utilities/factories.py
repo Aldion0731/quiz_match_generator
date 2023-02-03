@@ -4,6 +4,7 @@ from ..cleaners.areas_cleaner import (
     AreasCleaner,
     AreasCleanerDefault,
     AreasCleanerThirteen,
+    AreasCleanerTwenty,
 )
 from ..cleaners.season_cleaner import (
     SeasonCleaner,
@@ -15,11 +16,13 @@ AREAS_CLEANER_FACTORIES = {
     "2013": AreasCleanerThirteen(),
     "2014": AreasCleanerDefault(),
     "2016": AreasCleanerDefault(),
+    "2020": AreasCleanerTwenty(),
 }
 SEASON_CLEANER_FACTORIES = {
     "2013": SeasonCleanerThirteen,
     "2014": SeasonCleanerDefault,
     "2016": SeasonCleanerDefault,
+    "2020": SeasonCleanerDefault,
 }
 
 
