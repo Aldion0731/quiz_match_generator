@@ -15,7 +15,7 @@ SEASON_CLEANER_FACTORIES = {
 }
 
 
-class TextCleanerFactory:
+class AreasCleanerFactory:
     def create_from(self, section_keys: List[str]) -> AreasCleaner:
         key = generate_key(section_keys)
         return self.create(key)
@@ -34,7 +34,7 @@ class SeasonCleanerFactory:
         return self.create(key)
 
     def create(self, key: str) -> SeasonCleaner:
-        text_cleaner = TextCleanerFactory().create(key)
+        text_cleaner = AreasCleanerFactory().create(key)
         return SEASON_CLEANER_FACTORIES[key](text_cleaner)
 
     @staticmethod
