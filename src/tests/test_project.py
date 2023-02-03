@@ -3,12 +3,12 @@ from dataclasses import asdict
 import numpy as np
 import pandas as pd
 
-from ..utilities.areas_cleaner import AreasCleanerDefault
+from ..cleaners.areas_cleaner import AreasCleanerDefault
+from ..cleaners.season_cleaner import SeasonCleanerDefault
 from ..utilities.configurations import load_config
 from ..utilities.factories import SeasonCleanerFactory
 from ..utilities.question_generator import RandomQuestionsGenerator
 from ..utilities.quiz_seasons import ExcelSeasons, QuizSeason
-from ..utilities.season_cleaner import SeasonCleanerDefault
 from ..utilities.section_banks import SectionBanks, SectionFilter
 from ..utilities.sections_builder import SectionBuilder
 from ..utilities.subjects import Subjects

@@ -1,7 +1,15 @@
 from typing import List
 
-from .areas_cleaner import AreasCleaner, AreasCleanerDefault, AreasCleanerThirteen
-from .season_cleaner import SeasonCleaner, SeasonCleanerDefault, SeasonCleanerThirteen
+from ..cleaners.areas_cleaner import (
+    AreasCleaner,
+    AreasCleanerDefault,
+    AreasCleanerThirteen,
+)
+from ..cleaners.season_cleaner import (
+    SeasonCleaner,
+    SeasonCleanerDefault,
+    SeasonCleanerThirteen,
+)
 
 AREAS_CLEANER_FACTORIES = {
     "2013": AreasCleanerThirteen(),

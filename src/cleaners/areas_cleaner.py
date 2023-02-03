@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from .subjects import MapNames, Subjects
+from ..utilities.subjects import MapNames, Subjects
 
 
 class AreasCleaner(ABC):
