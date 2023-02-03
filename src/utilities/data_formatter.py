@@ -11,17 +11,27 @@ class DataFormatter(ABC):
         pass
 
 
-class DataFormatterThirteen(DataFormatter):
+class DefaultFormatter(DataFormatter):
     def __init__(self, section_df: pd.DataFrame) -> None:
         self.section_df = section_df.copy()
 
+    def format_data(self) -> pd.DataFrame:
+        self.section_df = self.section_df.dropna()
+        self.section_df.columns = self.__get_clean_col_names()
+        return self.section_df
+
+    def __get_clean_col_names(self) -> List[str]:
+        return [col.strip(" ") for col in self.section_df.columns]
+
+
+class DataFormatterThirteen(DefaultFormatter):
     def format_data(self) -> pd.DataFrame:
         if self.__is_clean():
             return self.section_df
         self.__add_column_names(self.__get_col_names())
         self.section_df = self.__create_single_question_col_df()
         self.__calculate_round_from_match()
-        return self.section_df
+        return self.section_df.reset_index(drop=True)
 
     def __is_clean(self) -> bool:
         return (

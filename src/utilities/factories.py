@@ -1,12 +1,12 @@
 from typing import List
 
+from .areas_cleaner import AreasCleaner, AreasCleanerDefault, AreasCleanerThirteen
 from .season_cleaner import SeasonCleaner, SeasonCleanerDefault, SeasonCleanerThirteen
-from .text_cleaner import TextCleaner, TextCleanerDefault, TextCleanerThirteen
 
-TEXT_CLEANER_FACTORIES = {
-    "2013": TextCleanerThirteen(),
-    "2014": TextCleanerDefault(),
-    "2016": TextCleanerDefault(),
+AREAS_CLEANER_FACTORIES = {
+    "2013": AreasCleanerThirteen(),
+    "2014": AreasCleanerDefault(),
+    "2016": AreasCleanerDefault(),
 }
 SEASON_CLEANER_FACTORIES = {
     "2013": SeasonCleanerThirteen,
@@ -16,16 +16,16 @@ SEASON_CLEANER_FACTORIES = {
 
 
 class TextCleanerFactory:
-    def create_from(self, section_keys: List[str]) -> TextCleaner:
+    def create_from(self, section_keys: List[str]) -> AreasCleaner:
         key = generate_key(section_keys)
         return self.create(key)
 
-    def create(self, key: str) -> TextCleaner:
-        return TEXT_CLEANER_FACTORIES[key]
+    def create(self, key: str) -> AreasCleaner:
+        return AREAS_CLEANER_FACTORIES[key]
 
     @staticmethod
     def show_keys() -> List[str]:
-        return list(TEXT_CLEANER_FACTORIES.keys())
+        return list(AREAS_CLEANER_FACTORIES.keys())
 
 
 class SeasonCleanerFactory:

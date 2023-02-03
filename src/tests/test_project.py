@@ -3,6 +3,7 @@ from dataclasses import asdict
 import numpy as np
 import pandas as pd
 
+from ..utilities.areas_cleaner import AreasCleanerDefault
 from ..utilities.configurations import load_config
 from ..utilities.factories import SeasonCleanerFactory
 from ..utilities.question_generator import RandomQuestionsGenerator
@@ -11,7 +12,6 @@ from ..utilities.season_cleaner import SeasonCleanerDefault
 from ..utilities.section_banks import SectionBanks, SectionFilter
 from ..utilities.sections_builder import SectionBuilder
 from ..utilities.subjects import Subjects
-from ..utilities.text_cleaner import TextCleanerDefault
 
 DATA_DIR = load_config().filepaths.data_dir
 EXCEL_SEASONS = ExcelSeasons().load_from_files(DATA_DIR)
@@ -37,8 +37,8 @@ def test_text_season_cleaner_default() -> None:
             "Test ": ["test", "test", "test", "test", "test", None],
         }
     )
-    text_cleaner = TextCleanerDefault()
-    cleaner = SeasonCleanerDefault(text_cleaner)
+    areas_cleaner = AreasCleanerDefault()
+    cleaner = SeasonCleanerDefault(areas_cleaner)
     clean_df = cleaner.get_clean_section(df)
     assert clean_df.equals(
         pd.DataFrame(
