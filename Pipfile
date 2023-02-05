@@ -10,6 +10,7 @@ pyserde = "~=0.9"
 tomli-w = "*"
 xlsxwriter = "~=3.0"
 pillow = "~=9.4"
+fastparquet = "*"
 
 [dev-packages]
 pylint = "~=2.15"
