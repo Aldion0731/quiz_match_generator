@@ -31,7 +31,9 @@ class DataFormatterThirteen(DefaultFormatter):
         self.__add_column_names(self.__get_col_names())
         self.section_df = self.__create_single_question_col_df()
         self.__calculate_round_from_match()
-        return self.section_df.reset_index(drop=True)
+        self.section_df = self.section_df.reset_index(drop=True)
+        super().format_data()
+        return self.section_df
 
     def __is_clean(self) -> bool:
         return (
@@ -73,6 +75,21 @@ class DataFormatterThirteen(DefaultFormatter):
         self.section_df["Match"] = (
             self.section_df["Match"].fillna(method="ffill").apply(int)
         )
+
+
+class DataFormatterSeventeen(DefaultFormatter):
+    def format_data(self) -> pd.DataFrame:
+        super().format_data()
+        self.section_df["Area"] = self.section_df["Area"].apply(str)
+        self.section_df = self.section_df.rename(columns={"Question": "Questions"})
+        return self.section_df
+
+
+class DataFormatterTwenty(DefaultFormatter):
+    def format_data(self) -> pd.DataFrame:
+        super().format_data()
+        self.section_df = self.section_df.rename(columns={"Question": "Questions"})
+        return self.section_df
 
 
 def calculate_round(match_num: int) -> int:

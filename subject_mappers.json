@@ -48,10 +48,23 @@
     "Theatre and Cinema": "The",
     "Theatre & Cinema": "The"
 },
+"SEVENTEEN_MAP": {
+    "0": "His"
+},
 
 "TWENTY_MAP": {
     "POB": "GK",
-    "Bk": "BK"
+    "Bk": "BK",
+    "Maths": "Math"
+},
+"TWENTY_ONE_MAP": {
+    "BKn": "BK",
+    "GKn": "GK",
+    "mus": "Music",
+    "Fren": "French",
+    "eng": "Eng",
+    "": "GK"
+
 }
 
 

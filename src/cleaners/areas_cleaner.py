@@ -27,9 +27,25 @@ class AreasCleanerThirteen(AreasCleanerDefault):
             return Subjects.from_df_val(text, MapNames.THIRTEEN).value
 
 
+class AreasCleanerSeventeen(AreasCleanerDefault):
+    def rename_area(self, text: str) -> str:
+        try:
+            return super().rename_area(text)
+        except Exception:
+            return Subjects.from_df_val(text, MapNames.SEVENTEEN).value
+
+
 class AreasCleanerTwenty(AreasCleanerDefault):
     def rename_area(self, text: str) -> str:
         try:
             return super().rename_area(text)
         except Exception:
             return Subjects.from_df_val(text, MapNames.TWENTY).value
+
+
+class AreasCleanerTwentyOne(AreasCleanerDefault):
+    def rename_area(self, text: str) -> str:
+        try:
+            return super().rename_area(text)
+        except Exception:
+            return Subjects.from_df_val(text, MapNames.TWENTY_ONE).value

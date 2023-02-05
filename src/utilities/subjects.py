@@ -9,7 +9,9 @@ from typing import Dict
 class MapNames(Enum):
     DEFAULT = "DEFAULT_MAP"
     THIRTEEN = "THIRTEEN_MAP"
+    SEVENTEEN = "SEVENTEEN_MAP"
     TWENTY = "TWENTY_MAP"
+    TWENTY_ONE = "TWENTY_ONE_MAP"
 
 
 class Subjects(Enum):
@@ -41,7 +43,7 @@ class Subjects(Enum):
 
 
 class MapGetter:
-    def __init__(self):
+    def __init__(self) -> None:
         self.map_src = "subject_mappers.json"
 
     @cached_property
