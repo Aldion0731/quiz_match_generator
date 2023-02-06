@@ -18,6 +18,7 @@ def run(config: Config, match_round: int | None = None) -> None:
     data_stores = [
         config.filepaths.data_dir / folder
         for folder in os.listdir(config.filepaths.data_dir)
+        if (config.filepaths.data_dir / folder).is_dir()
     ]
     cleaned_seasons = [
         QuizSeason().from_clean_parquet_store(store) for store in data_stores
