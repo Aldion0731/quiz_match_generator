@@ -34,6 +34,20 @@ class QuizSeason:
             section_keys=self.section_keys,
         )
 
+    def convert_to_parquet(self, dest: Path) -> None:
+        self.alternate.to_parquet(dest / f"{self.section_keys[0]}.parquet")
+        self.minutes.to_parquet(dest / f"{self.section_keys[1]}.parquet")
+        self.buzzer.to_parquet(dest / f"{self.section_keys[2]}.parquet")
+
+    def from_clean_parquet_store(self, parquet_store: Path) -> QuizSeason:
+        section_files = [parquet_store / file for file in os.listdir(parquet_store)]
+        return QuizSeason(
+            alternate=pd.read_parquet(section_files[0]),
+            minutes=pd.read_parquet(section_files[1]),
+            buzzer=pd.read_parquet(section_files[2]),
+            section_keys=self.section_keys,
+        )
+
 
 class ExcelSeasons:
     def load_from_files(self, data_dir: Path) -> List[Dict]:

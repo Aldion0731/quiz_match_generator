@@ -15,25 +15,25 @@ class MapNames(Enum):
 
 
 class Subjects(Enum):
-    ART = "Art"
     BK = "BK"
     BIO = "Bio"
+    ENG = "Eng"
     CA = "CA"
     CHEM = "Chem"
-    ENG = "Eng"
-    FRE = "French"
-    GEO = "Geo"
-    GK = "GK"
-    HIS = "His"
-    IT = "IT"
-    JH = "JH"
-    LIT = "Lit"
-    MAT = "Math"
     MUS = "Music"
-    PHY = "Phys"
+    GK = "GK"
     SPA = "Span"
-    SPO = "Sports"
+    GEO = "Geo"
     THE = "The"
+    IT = "IT"
+    HIS = "His"
+    MAT = "Math"
+    PHY = "Phys"
+    ART = "Art"
+    JH = "JH"
+    FRE = "French"
+    LIT = "Lit"
+    SPO = "Sports"
 
     @staticmethod
     def from_df_val(df_val: str, map_name: MapNames) -> Subjects:

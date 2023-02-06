@@ -1,3 +1,4 @@
+import os
 from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
@@ -5,8 +6,7 @@ from pathlib import Path
 import pandas as pd
 
 from ..utilities.configurations import Config, load_config
-from ..utilities.factories import SeasonCleanerFactory
-from ..utilities.quiz_seasons import ExcelSeasons, QuizSeason
+from ..utilities.quiz_seasons import QuizSeason
 from ..utilities.section_banks import SectionBanks, SectionFilter
 from ..utilities.sections_builder import SectionBuilder
 
@@ -15,13 +15,13 @@ def run(config: Config, match_round: int | None = None) -> None:
     if match_round is None:
         match_round = proj_config.settings.default_match_round
 
-    excel_seasons = ExcelSeasons().load_from_files(config.filepaths.data_dir)
-    seasons = [QuizSeason().from_read_excel(season) for season in excel_seasons]
-
-    section_keys = [season.section_keys for season in seasons]
-    cleaners = [SeasonCleanerFactory().create_from(keys) for keys in section_keys]
+    data_stores = [
+        config.filepaths.data_dir / folder
+        for folder in os.listdir(config.filepaths.data_dir)
+        if (config.filepaths.data_dir / folder).is_dir()
+    ]
     cleaned_seasons = [
-        season.with_clean_data(cleaners[i]) for i, season in enumerate(seasons)
+        QuizSeason().from_clean_parquet_store(store) for store in data_stores
     ]
 
     section_banks = SectionBanks()

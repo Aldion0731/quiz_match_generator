@@ -35,7 +35,11 @@ class SectionFilter:
     def __init__(self, section_questions: pd.DataFrame):
         self.section_questions = section_questions
         self.grouped_subjects = self.section_questions.groupby("Area")
-        self.subjects = self.grouped_subjects.groups.keys()
+        self.subjects = [
+            sub.value
+            for sub in Subjects
+            if sub.value in section_questions["Area"].values
+        ]
         self.mean_freq_quotient = load_config().settings.mean_frequency_quotient
         self.questions_frequent_areas = self.__get_questions_frequent_areas()
 
