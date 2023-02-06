@@ -33,7 +33,7 @@ def run() -> None:
     label_user_input_round.grid(row=1, column=0)
 
     round_menu = RoundMenu(frames.user_input_round)
-    round_menu.configure(width=20, height=2, bg="#FFCA4B", font=("Helvetica 18 bold"))
+    round_menu.configure(width=20, height=2, bg="#FFCA4B", font="Helvetica 18 bold")
     round_menu.menu.grid(row=2, column=0)
 
     button_generate = tk.Button(
