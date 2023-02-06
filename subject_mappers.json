@@ -1,0 +1,73 @@
+{"DEFAULT_MAP":  {
+    "Art": "Art",
+    "BK": "BK",
+    "bio": "Bio",
+    "Bio": "Bio",
+    "CA": "CA",
+    "Chem": "Chem",
+    "Eng": "Eng",
+    "French": "French",
+    "GK": "GK",
+    "Geo": "Geo",
+    "His": "His",
+    "IT": "IT",
+    "JH": "JH",
+    "Lit": "Lit",
+    "Math": "Math",
+    "Mus": "Music",
+    "Music": "Music",
+    "Phy": "Phys",
+    "Phys": "Phys",
+    "Span": "Span",
+    "Spo": "Sports",
+    "Sport": "Sports",
+    "Sports": "Sports",
+    "The": "The"
+},
+
+"THIRTEEN_MAP" : {
+    "Bible Knowledge": "BK",
+    "Biology": "Bio",
+    "Chemistry": "Chem",
+    "English Language": "Eng",
+    "General Knowledge": "GK",
+    "Geography": "Geo",
+    "History": "His",
+    "Info Tech": "IT",
+    "Information Technology": "IT",
+    "Jamaican Heritage": "JH",
+    "Literature": "Lit",
+    "Local & Int'l Affairs": "CA",
+    "Local and Int'l Affairs": "CA",
+    "Local and International Affairs": "CA",
+    "Mathematics": "Math",
+    "Physics": "Phys",
+    "Religious Knowledge": "GK",
+    "Spanish": "Span",
+    "TV & Cinema": "The",
+    "Theatre and Cinema": "The",
+    "Theatre & Cinema": "The"
+},
+"SEVENTEEN_MAP": {
+    "0": "His"
+},
+
+"TWENTY_MAP": {
+    "POB": "GK",
+    "Bk": "BK",
+    "Maths": "Math"
+},
+"TWENTY_ONE_MAP": {
+    "BKn": "BK",
+    "eng": "Eng",
+    "Fren": "French",
+    "GKn": "GK",
+    "mus": "Music",
+    "POB": "GK",
+    "": "GK"
+
+}
+
+
+}
+
