@@ -3,8 +3,11 @@ from dataclasses import asdict
 import numpy as np
 import pandas as pd
 
+from src.cleaners.areas_cleaner import AreasCleanerDefault
+
+from ..cleaners.section_cleaner import get_clean_section
 from ..utilities.configurations import load_config
-from ..utilities.factories import SeasonCleanerFactory
+from ..utilities.factories import AreasCleanerFactory, FormatterFactory
 from ..utilities.question_generator import RandomQuestionsGenerator
 from ..utilities.quiz_seasons import ExcelSeasons, QuizSeason
 from ..utilities.section_banks import SectionBanks, SectionFilter
@@ -14,10 +17,9 @@ from ..utilities.subjects import Subjects
 DATA_DIR = load_config().filepaths.data_dir
 EXCEL_SEASONS = ExcelSeasons().load_from_files(DATA_DIR)
 SEASONS = [QuizSeason().from_read_excel(season) for season in EXCEL_SEASONS]
-SECTION_KEYS = [season.section_keys for season in SEASONS]
-CLEANERS = [SeasonCleanerFactory().create_from(keys) for keys in SECTION_KEYS]
 CLEANED_SEASONS = [
-    season.with_clean_data(CLEANERS[i]) for i, season in enumerate(SEASONS)
+    season.with_clean_data(AreasCleanerFactory(), FormatterFactory())
+    for i, season in enumerate(SEASONS)
 ]
 SECTION_BANKS = SectionBanks().from_seasons(CLEANED_SEASONS)
 ALTERNATE_FILTER = SectionFilter(SECTION_BANKS.alternate)
@@ -28,26 +30,23 @@ def test_load_excel_season() -> None:
     assert [isinstance(item, dict) for item in EXCEL_SEASONS]
 
 
-# TODO Re-add this test. Fails because cleaner checks for certain specific columns.
-# def test_text_season_cleaner_default() -> None:
-#     df = pd.DataFrame(
-#         {
-#             "Area    ": ["bio", "Phy", "Spo", "Sport", "Mus", "Sports"],
-#             "Questions ": ["test", "test", "test", "test", "test", None],
-
-#         }
-#     )
-#     areas_cleaner = AreasCleanerDefault()
-#     cleaner = SeasonCleanerDefault(areas_cleaner)
-#     clean_df = cleaner.get_clean_section(df)
-#     assert clean_df.equals(
-#         pd.DataFrame(
-#             {
-#                 "Area": ["Bio", "Phys", "Sports", "Sports", "Music"],
-#                 "Test": ["test", "test", "test", "test", "test"],
-#             }
-#         )
-#     )
+def test_text_season_cleaner_default() -> None:
+    df = pd.DataFrame(
+        {
+            "Area": ["bio", "Phy", "Spo", "Sport", "Mus", "Sports"],
+            "Questions": ["test", "test", "test", "test", "test", None],
+        }
+    )
+    cleaner = AreasCleanerDefault()
+    clean_df = get_clean_section(df, cleaner)
+    assert clean_df.equals(
+        pd.DataFrame(
+            {
+                "Area": ["Bio", "Phys", "Sports", "Sports", "Music", "Sports"],
+                "Questions": ["test", "test", "test", "test", "test", None],
+            }
+        )
+    )
 
 
 def test_clean_banks() -> None:

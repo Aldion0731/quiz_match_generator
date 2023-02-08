@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 
 from ..gui.dropdowns import RoundMenu
 from ..gui.gui_utils import create_frames, create_window, generate_match
+from ..utilities.addresses import Verifier
 from ..utilities.configurations import load_config
 
 
@@ -51,7 +52,18 @@ def run() -> None:
 
     frames.header.grid(row=0, column=1)
     frames.user_input_round.grid(row=1, column=1)
-    frames.generate_match.grid(row=2, column=1)
+    verifier = Verifier()
+    if not verifier.registered:
+        message = tk.Message(
+            window,
+            text="Register with developer: Aldion Lee (lxdavid.lee@gmail.com)",
+            font=("Helvetica 18 bold"),
+            fg="red",
+            width=1000,
+        )
+        message.grid(row=2, column=1)
+    else:
+        frames.generate_match.grid(row=2, column=1)
 
     window.mainloop()
 

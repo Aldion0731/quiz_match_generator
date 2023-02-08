@@ -25,7 +25,9 @@ def create_window(config: Config) -> tk.Tk:
     window.iconbitmap(config.school_info.icon)
     window.columnconfigure([0, 1, 2], weight=1, minsize=75)  # type: ignore
     window.rowconfigure([0, 1, 2], weight=1, minsize=75)  # type: ignore
-    window.title(f"{config.school_info.name.value} - Quiz Match Generator")
+    window.title(
+        f"{config.school_info.name.value} - Quiz Match Generator (Aldion Lee \xa9 2023)"
+    )
     return window
 
 
