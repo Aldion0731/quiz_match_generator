@@ -20,7 +20,7 @@ class DefaultFormatter(DataFormatter):
         try:
             return [col.strip(" ") for col in self.section_df.columns]
         except Exception:
-            return [col for col in self.section_df.columns]
+            return list(self.section_df.columns)
 
     def format_data(self) -> pd.DataFrame:
         return self.get_necessary_data()
