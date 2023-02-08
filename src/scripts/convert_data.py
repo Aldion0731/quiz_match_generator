@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from ..utilities.configurations import load_config
-from ..utilities.factories import SeasonCleanerFactory
+from ..utilities.factories import AreasCleanerFactory, FormatterFactory
 from ..utilities.parquet_store import ParquetStore
 from ..utilities.quiz_seasons import ExcelSeasons, QuizSeason
 
@@ -10,10 +10,9 @@ def run(data_dir: Path) -> None:
     excel_seasons = ExcelSeasons().load_from_files(data_dir)
     seasons = [QuizSeason().from_read_excel(season) for season in excel_seasons]
 
-    section_keys = [season.section_keys for season in seasons]
-    cleaners = [SeasonCleanerFactory().create_from(keys) for keys in section_keys]
     cleaned_seasons = [
-        season.with_clean_data(cleaners[i]) for i, season in enumerate(seasons)
+        season.with_clean_data(AreasCleanerFactory(), FormatterFactory())
+        for i, season in enumerate(seasons)
     ]
 
     for season in cleaned_seasons:

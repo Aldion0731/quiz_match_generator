@@ -1,37 +1,38 @@
 from typing import List
 
+import pandas as pd
+
 from ..cleaners.areas_cleaner import (
     AreasCleaner,
     AreasCleanerDefault,
-    AreasCleanerSeventeen,
     AreasCleanerThirteen,
     AreasCleanerTwenty,
     AreasCleanerTwentyOne,
 )
-from ..cleaners.season_cleaner import (
-    SeasonCleaner,
-    SeasonCleanerDefault,
-    SeasonCleanerSeventeen,
-    SeasonCleanerThirteen,
-    SeasonCleanerTwenty,
-    SeasonCleanerTwentyOne,
+from ..cleaners.data_formatter import (
+    DataFormatter,
+    DataFormatterSeventeen,
+    DataFormatterThirteen,
+    DataFormatterTwenty,
+    DataFormatterTwentyOne,
+    DefaultFormatter,
 )
 
 AREAS_CLEANER_FACTORIES = {
     "2013": AreasCleanerThirteen(),
     "2014": AreasCleanerDefault(),
     "2016": AreasCleanerDefault(),
-    "2017": AreasCleanerSeventeen(),
+    "2017": AreasCleanerDefault(),
     "2020": AreasCleanerTwenty(),
     "2021": AreasCleanerTwentyOne(),
 }
-SEASON_CLEANER_FACTORIES = {
-    "2013": SeasonCleanerThirteen,
-    "2014": SeasonCleanerDefault,
-    "2016": SeasonCleanerDefault,
-    "2017": SeasonCleanerSeventeen,
-    "2020": SeasonCleanerTwenty,
-    "2021": SeasonCleanerTwentyOne,
+FORMATTER_FACTORIES = {
+    "2013": DataFormatterThirteen,
+    "2014": DefaultFormatter,
+    "2016": DefaultFormatter,
+    "2017": DataFormatterSeventeen,
+    "2020": DataFormatterTwenty,
+    "2021": DataFormatterTwentyOne,
 }
 
 
@@ -48,18 +49,17 @@ class AreasCleanerFactory:
         return list(AREAS_CLEANER_FACTORIES.keys())
 
 
-class SeasonCleanerFactory:
-    def create_from(self, section_keys: List[str]) -> SeasonCleaner:
+class FormatterFactory:
+    def create_from(self, section_keys: List[str], df: pd.DataFrame) -> DataFormatter:
         key = generate_key(section_keys)
-        return self.create(key)
+        return self.create(key, df)
 
-    def create(self, key: str) -> SeasonCleaner:
-        area_cleaner = AreasCleanerFactory().create(key)
-        return SEASON_CLEANER_FACTORIES[key](area_cleaner)
+    def create(self, key: str, df: pd.DataFrame) -> DataFormatter:
+        return FORMATTER_FACTORIES[key](df)
 
     @staticmethod
     def show_keys() -> List[str]:
-        return list(SEASON_CLEANER_FACTORIES.keys())
+        return list(FORMATTER_FACTORIES.keys())
 
 
 def generate_key(section_keys: List[str]) -> str:

@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 from ..utilities.configurations import load_config
-from ..utilities.factories import SeasonCleanerFactory
+from ..utilities.factories import AreasCleanerFactory, FormatterFactory
 from ..utilities.question_generator import RandomQuestionsGenerator
 from ..utilities.quiz_seasons import ExcelSeasons, QuizSeason
 from ..utilities.section_banks import SectionBanks, SectionFilter
@@ -14,10 +14,9 @@ from ..utilities.subjects import Subjects
 DATA_DIR = load_config().filepaths.data_dir
 EXCEL_SEASONS = ExcelSeasons().load_from_files(DATA_DIR)
 SEASONS = [QuizSeason().from_read_excel(season) for season in EXCEL_SEASONS]
-SECTION_KEYS = [season.section_keys for season in SEASONS]
-CLEANERS = [SeasonCleanerFactory().create_from(keys) for keys in SECTION_KEYS]
 CLEANED_SEASONS = [
-    season.with_clean_data(CLEANERS[i]) for i, season in enumerate(SEASONS)
+    season.with_clean_data(AreasCleanerFactory(), FormatterFactory())
+    for i, season in enumerate(SEASONS)
 ]
 SECTION_BANKS = SectionBanks().from_seasons(CLEANED_SEASONS)
 ALTERNATE_FILTER = SectionFilter(SECTION_BANKS.alternate)

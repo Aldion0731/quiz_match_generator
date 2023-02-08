@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass, field
+from functools import partial
 from pathlib import Path
 from typing import Dict, List
 
 import pandas as pd
 
-from ..cleaners.season_cleaner import SeasonCleaner
+from ..cleaners.section_cleaner import get_clean_section
+from ..utilities.factories import AreasCleanerFactory, FormatterFactory
 
 
 @dataclass
@@ -26,13 +28,40 @@ class QuizSeason:
             section_keys=section_keys,
         )
 
-    def with_clean_data(self, cleaner: SeasonCleaner) -> QuizSeason:
+    def with_clean_data(
+        self, cleaner_factory: AreasCleanerFactory, formatter_factory: FormatterFactory
+    ) -> QuizSeason:
+        season = self.with_formatted_data(formatter_factory)
+        cleaner = cleaner_factory.create_from(self.section_keys)
         return QuizSeason(
-            alternate=cleaner.get_clean_section(self.alternate),
-            minutes=cleaner.get_clean_section(self.minutes),
-            buzzer=cleaner.get_clean_section(self.buzzer),
+            alternate=get_clean_section(season.alternate, cleaner),
+            minutes=get_clean_section(season.minutes, cleaner),
+            buzzer=get_clean_section(season.buzzer, cleaner),
+            section_keys=season.section_keys,
+        )
+
+    def with_formatted_data(self, factory: FormatterFactory) -> QuizSeason:
+        formatter = partial(factory.create_from, section_keys=self.section_keys)
+        alt_formatter = formatter(df=self.alternate)
+        min_formatter = formatter(df=self.minutes)
+        buzzer_formatter = formatter(df=self.buzzer)
+        return QuizSeason(
+            alternate=alt_formatter.format_data(),
+            minutes=min_formatter.format_data(),
+            buzzer=buzzer_formatter.format_data(),
             section_keys=self.section_keys,
         )
+
+    def compare_formatted_data(self, factory: FormatterFactory) -> Dict[str, int]:
+        formatted_season = self.with_formatted_data(factory)
+        dropped_alternate = len(self.alternate) - len(formatted_season.alternate)
+        dropped_minutes = len(self.minutes) - len(formatted_season.minutes)
+        dropped_buzzer = len(self.buzzer) - len(formatted_season.buzzer)
+        return {
+            "alternate": dropped_alternate,
+            "minutes": dropped_minutes,
+            "buzzer": dropped_buzzer,
+        }
 
     def convert_to_parquet(self, dest: Path) -> None:
         self.alternate.to_parquet(dest / f"{self.section_keys[0]}.parquet")
